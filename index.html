@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>聖誕卡片</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@400;700&family=Kalam:wght@700&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', 'Microsoft JhengHei', sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #1e3c72 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* 雪花容器 */
+        .snow-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .snowflake {
+            position: absolute;
+            color: white;
+            font-size: 1em;
+            font-family: Arial;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+            animation: fall linear infinite;
+            opacity: 0.8;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+
+        /* 卡片容器 */
+        .card-container {
+            position: relative;
+            z-index: 10;
+            perspective: 1500px;
+            width: 90%;
+            max-width: 800px;
+            height: 90vh;
+            max-height: 600px;
+        }
+
+        @media (max-width: 768px) {
+            .card-container {
+                width: 95%;
+                height: 85vh;
+                max-height: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .card-container {
+                width: 98%;
+                height: 90vh;
+            }
+        }
+
+        @media (orientation: landscape) and (max-height: 600px) {
+            .card-container {
+                width: 95%;
+                height: 95vh;
+                max-width: none;
+                max-height: none;
+            }
+        }
+
+        @media (orientation: landscape) and (max-width: 900px) and (max-height: 500px) {
+            .card-container {
+                width: 98%;
+                height: 98vh;
+            }
+        }
+
+        .card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+
+        .card.flipped {
+            transform: rotateX(-180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+
+        @media (max-width: 768px) {
+            .card-face {
+                border-radius: 15px;
+                box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .card-face {
+                border-radius: 12px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            }
+        }
+
+        /* 卡片封面 */
+        .card-front {
+            background: linear-gradient(135deg, #c41e3a 0%, #8b0000 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            text-align: center;
+            transform: rotateX(0deg);
+        }
+
+        @media (max-width: 768px) {
+            .card-front {
+                padding: 30px 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .card-front {
+                padding: 20px 15px;
+            }
+        }
+
+        @media (orientation: landscape) and (max-height: 600px) {
+            .card-front {
+                padding: 20px 15px;
+            }
+        }
+
+        @media (orientation: landscape) and (max-width: 900px) and (max-height: 500px) {
+            .card-front {
+                padding: 15px 10px;
+            }
+        }
+
+        .card-front::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+        }
+
+        .merry-christmas {
+            font-family: 'Mountains of Christmas', cursive;
+            font-size: 3em;
+            color: #ffd700;
+            text-shadow:
+                3px 3px 0px #ff6b6b,
+                0 0 20px rgba(255, 215, 0, 0.8);
+            margin-bottom: 20px;
+            font-weight: 700;
+            letter-spacing: 5px;
+            z-index: 1;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @media (max-width: 768px) {
+            .merry-christmas {
+                font-size: 2.2em;
+                letter-spacing: 3px;
+                margin-bottom: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .merry-christmas {
+                font-size: 1.6em;
+                letter-spacing: 2px;
+                margin-bottom: 12px;
+                line-height: 1.2;
+            }
+        }
+
+        @media (orientation: landscape) and (max-height: 600px) {
+            .merry-christmas {
+                font-size: 2em;
+                letter-spacing: 3px;
+                margin-bottom: 15px;
+            }
+        }
+
+        @media (orientation: landscape) and (max-width: 900px) and (max-height: 500px) {
+            .merry-christmas {
+                font-size: 1.5em;
+                letter-spacing: 2px;
+                margin-bottom: 10px;
+            }
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow:
+                    3px 3px 0px #ff6b6b,
+                    0 0 20px rgba(255, 215, 0, 0.8);
+            }
+
+            to {
+                text-shadow:
+                    3px 3px 0px #ff6b6b,
+                    0 0 30px rgba(255, 215, 0, 1),
+                    0 0 40px rgba(255, 215, 0, 0.8);
+            }
+        }
+
+        .click-hint {
+            color: #ffd700;
+            font-size: 1.2em;
+            margin-top: 30px;
+            z-index: 1;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @media (max-width: 768px) {
+            .click-hint {
+                font-size: 1em;
+                margin-top: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .click-hint {
+                font-size: 0.9em;
+                margin-top: 15px;
+            }
+        }
+
+        @media (orientation: landscape) and (max-height: 600px) {
+            .click-hint {
+                font-size: 0.9em;
+                margin-top: 12px;
+            }
+        }
+
+        @media (orientation: landscape) and (max-width: 900px) and (max-height: 500px) {
+            .click-hint {
+                font-size: 0.8em;
+                margin-top: 10px;
+            }
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 0.7;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.05);
+            }
+        }
+
+        .snowman-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+            z-index: 1;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @media (max-width: 768px) {
+            .snowman-icon {
+                font-size: 3em;
+                margin-bottom: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .snowman-icon {
+                font-size: 2.5em;
+                margin-bottom: 12px;
+            }
+        }
+
+        @media (orientation: landscape) and (max-height: 600px) {
+            .snowman-icon {
+                font-size: 2.5em;
+                margin-bottom: 12px;
+            }
+        }
+
+        @media (orientation: landscape) and (max-width: 900px) and (max-height: 500px) {
+            .snowman-icon {
+                font-size: 2em;
+                margin-bottom: 10px;
+            }
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        /* 卡片內頁 */
+        .card-back {
+            background: linear-gradient(135deg, #0d5d2a 0%, #1a7a3e 50%, #0d5d2a 100%);
+            transform: rotateX(180deg);
+            display: flex;
+            flex-direction: row;
+            padding: 0;
+        }
+
+        @media (max-width: 768px) {
+            .card-back {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .card-back {
+                flex-direction: column;
+            }
+        }
+
+        @media (orientation: landscape) {
+            .card-back {
+                flex-direction: row;
+            }
+        }
+
+        @media (orientation: landscape) and (max-width: 900px) {
+            .card-back {
+                flex-direction: row;
+            }
+        }
+
+        .card-content {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            overflow-y: auto;
+            min-width: 0;
+        }
+
+        @media (max-width: 768px) {
+            .card-content {
+                padding: 25px 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .card-content {
+                padding: 20px 15px;
+            }
+        }
+
+        @media (orientation: landscape) and (max-height: 600px) {
+            .card-content {
+                padding: 20px 15px;
+                overflow-y: auto;
+            }
+        }
+
+        @media (orientation: landscape) and (max-width: 900px) and (max-height: 500px) {
+            .card-content {
+                padding: 15px 12px;
+            }
+        }
+
+        .card-image {
+            flex: 1;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            min-height: 200px;
+            min-width: 0;
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        @media (max-width: 768px) {
+            .card-image {
+                min-height: 300px;
+                flex: 0 0 45%;
+                background-size: contain;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .card-image {
+                min-height: 250px;
+                flex: 0 0 40%;
+                background-size: contain;
+            }
+        }
+
+        @media (orientation: landscape) and (max-height: 600px) {
+            .card-image {
+                min-height: 0;
+                flex: 0 0 45%;
+                background-size: contain;
+            }
+        }
+
+        @media (orientation: landscape) and (max-width: 900px) and (max-height: 500px) {
+            .card-image {
+                flex: 0 0 40%;
+                background-size: contain;
+            }
+        }
+
+        .greeting-title {
+            font-size: 2.5em;
+            color: #ffd700;
+            margin-bottom: 30px;
+            text-align: center;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5), 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        @media (max-width: 768px) {
+            .greeting-title {
+                font-size: 2em;
+                margin-bottom: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .greeting-title {
+                font-size: 1.6em;
+                margin-bottom: 15px;
+            }
+        }
+
+        @media (orientation: landscape) and (max-height: 600px) {
+            .greeting-title {
+                font-size: 1.8em;
+                margin-bottom: 15px;
+            }
+        }
+
+        @media (orientation: landscape) and (max-width: 900px) and (max-height: 500px) {
+            .greeting-title {
+                font-size: 1.5em;
+                margin-bottom: 12px;
+            }
+        }
+
+        .greeting-content {
+            font-size: 1.3em;
+            line-height: 2;
+            color: #fff;
+            text-align: justify;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(5px);
+        }
+
+        @media (max-width: 768px) {
+            .greeting-content {
+                font-size: 1.1em;
+                line-height: 1.8;
+                padding: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .greeting-content {
+                font-size: 0.95em;
+                line-height: 1.6;
+                padding: 12px;
+                text-align: left;
+            }
+        }
+
+        @media (orientation: landscape) and (max-height: 600px) {
+            .greeting-content {
+                font-size: 1em;
+                line-height: 1.6;
+                padding: 12px;
+            }
+        }
+
+        @media (orientation: landscape) and (max-width: 900px) and (max-height: 500px) {
+            .greeting-content {
+                font-size: 0.85em;
+                line-height: 1.5;
+                padding: 10px;
+            }
+        }
+
+        .greeting-content p {
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 480px) {
+            .greeting-content p {
+                margin-bottom: 12px;
+            }
+        }
+
+        @media (orientation: landscape) and (max-height: 600px) {
+            .greeting-content p {
+                margin-bottom: 10px;
+            }
+        }
+
+        /* 裝飾元素 */
+        .decoration {
+            position: absolute;
+            font-size: 2em;
+            opacity: 0.3;
+        }
+
+        .decoration.top-left {
+            top: 20px;
+            left: 20px;
+        }
+
+        .decoration.top-right {
+            top: 20px;
+            right: 20px;
+        }
+
+        .decoration.bottom-left {
+            bottom: 20px;
+            left: 20px;
+        }
+
+        .decoration.bottom-right {
+            bottom: 20px;
+            right: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .decoration {
+                font-size: 1.5em;
+            }
+
+            .decoration.top-left,
+            .decoration.top-right {
+                top: 15px;
+            }
+
+            .decoration.top-left {
+                left: 15px;
+            }
+
+            .decoration.top-right {
+                right: 15px;
+            }
+
+            .decoration.bottom-left,
+            .decoration.bottom-right {
+                bottom: 15px;
+            }
+
+            .decoration.bottom-left {
+                left: 15px;
+            }
+
+            .decoration.bottom-right {
+                right: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .decoration {
+                font-size: 1.2em;
+                opacity: 0.25;
+            }
+
+            .decoration.top-left,
+            .decoration.top-right {
+                top: 10px;
+            }
+
+            .decoration.top-left {
+                left: 10px;
+            }
+
+            .decoration.top-right {
+                right: 10px;
+            }
+
+            .decoration.bottom-left,
+            .decoration.bottom-right {
+                bottom: 10px;
+            }
+
+            .decoration.bottom-left {
+                left: 10px;
+            }
+
+            .decoration.bottom-right {
+                right: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 雪花容器 -->
+    <div class="snow-container" id="snowContainer"></div>
+
+    <!-- 卡片容器 -->
+    <div class="card-container">
+        <div class="card" id="card">
+            <!-- 卡片封面 -->
+            <div class="card-face card-front">
+                <div class="snowman-icon">☃️</div>
+                <div class="merry-christmas">MERRY CHRISTMAS</div>
+                <div class="click-hint">點擊卡片打開</div>
+                <div class="decoration top-left">🎄</div>
+                <div class="decoration top-right">🎁</div>
+                <div class="decoration bottom-left">❄️</div>
+                <div class="decoration bottom-right">🦌</div>
+            </div>
+
+            <!-- 卡片內頁 -->
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <div class="greeting-title">To 燕燕：</div>
+                    <div class="greeting-content">
+                        <p>親愛的老婆，聖誕快樂！雖然今年沒辦法一起過聖誕節，不過也是因為我們有了自己的小寶貝，需要分隔兩地，暫時辛苦妳啦，明年我們再一起過！</p>
+                        <p>願溫暖、喜悅與以及我的愛充滿你的心，我們一直幸福下去喔～</p>
+                    </div>
+                </div>
+                <div class="card-image" style="background-image: url('images/IMG_6030.jpeg');"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 卡片翻開功能
+        const card = document.getElementById('card');
+        let isFlipped = false;
+
+        card.addEventListener('click', () => {
+            isFlipped = !isFlipped;
+            card.classList.toggle('flipped', isFlipped);
+        });
+
+        // 雪花效果
+        const snowContainer = document.getElementById('snowContainer');
+        const snowflakes = ['❄', '❅', '❆', '✻', '✼', '✽', '✾', '✿'];
+
+        function createSnowflake() {
+            const snowflake = document.createElement('div');
+            snowflake.className = 'snowflake';
+            snowflake.textContent = snowflakes[Math.floor(Math.random() * snowflakes.length)];
+
+            const startPosition = Math.random() * 100;
+            const duration = Math.random() * 3 + 2; // 2-5秒
+            const delay = Math.random() * 2;
+            const size = Math.random() * 0.5 + 0.5; // 0.5-1em
+
+            snowflake.style.left = startPosition + '%';
+            snowflake.style.fontSize = size + 'em';
+            snowflake.style.animationDuration = duration + 's';
+            snowflake.style.animationDelay = delay + 's';
+
+            snowContainer.appendChild(snowflake);
+
+            // 移除已經落下的雪花
+            setTimeout(() => {
+                if (snowflake.parentNode) {
+                    snowflake.parentNode.removeChild(snowflake);
+                }
+            }, (duration + delay) * 1000);
+        }
+
+        // 持續創建雪花
+        function startSnow() {
+            setInterval(createSnowflake, 300);
+        }
+
+        // 初始化雪花
+        for (let i = 0; i < 30; i++) {
+            setTimeout(() => createSnowflake(), i * 200);
+        }
+
+        startSnow();
+    </script>
+</body>
+
+</html>
