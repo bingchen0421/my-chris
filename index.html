@@ -134,6 +134,11 @@
                 border-radius: 12px;
                 box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             }
+
+            .card-face.card-back {
+                overflow-y: auto;
+                overflow-x: hidden;
+            }
         }
 
         /* 卡片封面 */
@@ -361,6 +366,9 @@
         @media (max-width: 480px) {
             .card-back {
                 flex-direction: column;
+                padding-bottom: 20px;
+                overflow-y: auto;
+                overflow-x: hidden;
             }
         }
 
@@ -394,7 +402,8 @@
 
         @media (max-width: 480px) {
             .card-content {
-                padding: 20px 15px;
+                padding: 20px 15px 10px 15px;
+                flex: 0 0 auto;
             }
         }
 
@@ -431,9 +440,13 @@
 
         @media (max-width: 480px) {
             .card-image {
-                min-height: 250px;
-                flex: 0 0 40%;
+                min-height: 450px;
+                flex: 0 0 auto;
                 background-size: contain;
+                margin-top: 10px;
+                margin-bottom: 80px;
+                padding-bottom: 20px;
+                width: 100%;
             }
         }
 
